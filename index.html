@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quién es quién? - Valorant</title>
+    <style>
+        /* Estilos inspirados en Valorant */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f1923; /* Azul oscuro típico de Valorant */
+            color: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #ff4655; /* Rojo Valorant */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Sección de tu personaje asignado */
+        .my-agent-container {
+            background-color: #1f2731;
+            border: 2px solid #ff4655;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            width: 250px;
+        }
+
+        .my-agent-container img {
+            width: 100px;
+            height: 100px;
+            background-color: #ece8e1;
+            border-radius: 50%;
+        }
+
+        /* El tablero de juego */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Cartas de los agentes */
+        .agent-card {
+            background-color: #ece8e1; /* Blanco hueso */
+            color: #0f1923;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            border: 3px solid transparent;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff4655;
+        }
+
+        .agent-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .agent-card h3 {
+            margin: 10px 0 5px 0;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        .agent-card p {
+            margin: 0;
+            font-size: 12px;
+            font-weight: bold;
+            color: #ff4655;
+        }
+
+        /* Clase que se aplica al hacer clic (carta descartada) */
+        .discarded {
+            opacity: 0.2;
+            filter: grayscale(100%);
+            transform: scale(0.95);
+        }
+        
+        .discarded:hover {
+            transform: scale(0.95); /* Anula el efecto hover si está descartada */
+            border-color: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>¿Quién es quién? Valorant</h1>
+
+    <div class="my-agent-container">
+        <h2>Tu Agente Secreto</h2>
+        <img id="my-agent-img" src="" alt="Cargando...">
+        <h3 id="my-agent-name">Cargando...</h3>
+        <p id="my-agent-role"></p>
+    </div>
+
+    <div class="board" id="board">
+        </div>
+
+    <script>
+        // Usamos isPlayableCharacter=true para evitar que la API devuelva personajes de prueba o duplicados (como el Sova del tutorial)
+        const apiUrl = 'https://valorant-api.com/v1/agents?isPlayableCharacter=true';
+        let agents = [];
+
+        // Función principal para iniciar el juego
+        async function initGame() {
+            try {
+                // 1. Obtener datos de la API
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                agents = data.data;
+
+                // 2. Elegir un agente al azar para el jugador
+                selectRandomAgent();
+
+                // 3. Dibujar el tablero con todos los agentes
+                renderBoard();
+            } catch (error) {
+                console.error("Error al cargar la API de Valorant:", error);
+                alert("Hubo un error cargando los agentes. Revisa tu conexión.");
+            }
+        }
+
+        // Selecciona un agente al azar y lo muestra en la parte superior
+        function selectRandomAgent() {
+            const randomIndex = Math.floor(Math.random() * agents.length);
+            const myAgent = agents[randomIndex];
+
+            document.getElementById('my-agent-img').src = myAgent.displayIcon;
+            document.getElementById('my-agent-name').innerText = myAgent.displayName;
+            document.getElementById('my-agent-role').innerText = myAgent.role.displayName;
+        }
+
+        // Dibuja las cartas en el tablero
+        function renderBoard() {
+            const board = document.getElementById('board');
+            board.innerHTML = ''; // Limpiar tablero por si acaso
+
+            agents.forEach(agent => {
+                // Crear el contenedor de la carta
+                const card = document.createElement('div');
+                card.className = 'agent-card';
+
+                // Contenido de la carta (Imagen, Nombre, Rol)
+                card.innerHTML = `
+                    <img src="${agent.displayIcon}" alt="${agent.displayName}">
+                    <h3>${agent.displayName}</h3>
+                    <p>${agent.role.displayName}</p>
+                `;
+
+                // Agregar el evento de clic para "Tachar" o "Destachar" al agente
+                card.onclick = () => {
+                    card.classList.toggle('discarded');
+                };
+
+                // Añadir la carta al tablero
+                board.appendChild(card);
+            });
+        }
+
+        // Iniciar el juego cuando cargue la página
+        initGame();
+    </script>
+
+</body>
+</html>
