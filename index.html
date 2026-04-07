@@ -158,24 +158,14 @@
         let agents = [], myAgent = null;
         let attempts = 0, discarded = 0;
 
-    async function initGame() {
-    try {
-        const res = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
-        const data = await res.json();
-        agents = data.data;
-        populateRoleFilter();
-        resetGame();
-    } catch (e) {
-        console.error("Error cargando la API:", e);
-        document.getElementById('my-agent-name').textContent = "Error al cargar agentes";
-    }
-}
+        async function initGame() {
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+            agents = data.data;
+            populateRoleFilter();
+            resetGame();
+        }
+
         function populateRoleFilter() {
             const roles = [...new Set(agents.map(a => a.role.displayName))].sort();
             const sel = document.getElementById('roleFilter');
@@ -201,6 +191,11 @@
             document.getElementById('my-agent-role').textContent = myAgent.role.displayName;
             renderBoard('all');
             updateStats();
+
+            function resetGame() {
+    if (!agents || agents.length === 0) return;
+    attempts = 0; discarded = 0;
+}
         }
 
         function renderBoard(roleFilter) {
