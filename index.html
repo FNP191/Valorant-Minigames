@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valorant Guess - Full Roster</title>
+    <title>Valorant Minigames</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -290,7 +290,7 @@
         let agents = [], maps = [], skins = [];
         let myAgent = null, mode = '', gameOver = false, isPicking = false;
         let qCount = 0, fCount = 0;
-        let miniAns = '', miniMode = '';
+        let miniAns = '', miniAnsAlt = '', miniMode = '';
 
         const agentExtra = {
             "Jett": { c: "Corea del Sur", g: "Femenino" }, "Raze": { c: "Brasil", g: "Femenino" },
@@ -515,6 +515,7 @@
             document.getElementById('mini-options').style.display = 'none';
             document.getElementById('mini-img').style.display = 'none';
             document.getElementById('mini-img').src = '';
+            miniAnsAlt = '';
             
             if (miniMode === 'agente') {
                 const a = agents[Math.floor(Math.random() * agents.length)];
@@ -547,7 +548,17 @@
             }
             else if (miniMode === 'skin') {
                 const s = skins[Math.floor(Math.random() * skins.length)];
-                miniAns = s.displayName.toLowerCase();
+                // Extraer solo el nombre de la skin sin el arma (ej: "Vandal Reaver" → "Reaver")
+                const weapons = ["Vandal","Phantom","Operator","Guardian","Bulldog","Classic","Ghost","Sheriff","Stinger","Shorty","Odin","Ares","Spectre","Bucky","Judge","Frenzy","Marshal","Outlaw","Knife","Melee"];
+                let skinName = s.displayName;
+                for (const w of weapons) {
+                    if (skinName.startsWith(w + " ")) {
+                        skinName = skinName.slice(w.length + 1);
+                        break;
+                    }
+                }
+                miniAns = skinName.toLowerCase();
+                miniAnsAlt = s.displayName.toLowerCase(); // también aceptar nombre completo
                 document.getElementById('mini-img').src = s.displayIcon;
                 document.getElementById('mini-img').style.display = 'block';
                 document.getElementById('mini-clue').textContent = "¿Nombre de la Skin?";
@@ -577,7 +588,8 @@
 
         function checkMiniAnswer() {
             const user = document.getElementById('mini-input').value.trim().toLowerCase();
-            showMiniResult(user === miniAns, miniAns);
+            const isCorrect = user === miniAns || (miniAnsAlt && user === miniAnsAlt);
+            showMiniResult(isCorrect, miniAns);
         }
 
         function showMiniResult(win, correct) {
