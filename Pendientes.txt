@@ -7,6 +7,6 @@ Separar archivos (index, style y script).
 Animaciones de carga.
 Temporizador en algunos.
 Fuentes (Tungsten o DIN Next).
-
+Vyse, Iso, Clove
 
 
