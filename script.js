@@ -337,7 +337,14 @@ function loadMiniRound() {
         renderMiniOptions(maps.map(x => x.displayName), m.displayName);
     }
     else if (miniMode === 'arma') {
-        const w = [{n: "Vandal", p: "2900", c: "25"},{n: "Phantom", p: "2900", c: "30"},{n: "Operator", p: "4700", c: "5"},{n: "Guardian", p: "2250", c: "12"},{n: "Bulldog", p: "2100", c: "24"},{n: "Classic", p: "0", c: "12"},{n: "Ghost", p: "500", c: "15"},{n: "Sheriff", p: "800", c: "6"},{n: "Stinger", p: "950", c: "20"},{n: "Shorty", p: "900", c: "2"}];
+        const w =   [
+                    {n: "Classic", p: "0", c: "12"}, {n: "Shorty", p: "300", c: "2"}, {n: "Frenzy", p: "450", c: "15"},{n: "Ghost", p: "500", c: "13"}, {n: "Bandit", p: "600", c: "8"}, {n: "Sheriff", p: "800", c: "6"},
+                    {n: "Bucky", p: "850", c: "5"}, {n: "Judge", p: "1850", c: "5"},
+                    {n: "Vandal", p: "2900", c: "25"}, {n: "Phantom", p: "2900", c: "30"},
+                    {n: "Operator", p: "4700", c: "5"}, {n: "Marshal", p: "950", c: "5"}, {n: "Outlaw", p: "2400", c: "2"},
+                    {n: "Guardian", p: "2250", c: "12"},{n: "Bulldog", p: "2050", c: "24"},
+                    {n: "Stinger", p: "1100", c: "20"}, {n: "Spectre", p: "1600", c: "30"},
+                    {n: "Odin", p: "3200", c: "100"}, {n: "Ares", p: "1600", c: "50"}];
         const pick = w[Math.floor(Math.random() * w.length)];
         miniAns = pick.n.toLowerCase();
         document.getElementById('mini-clue').innerHTML = `Precio: <b>${pick.p}</b><br>Cargador: <b>${pick.c} balas</b>`;
