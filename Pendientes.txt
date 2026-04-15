@@ -1,12 +1,8 @@
-Arreglar flechas.
+Arreglar flechas, que funcionen las flechas de google y las del telefono.°
 Añadir discard mode y respuesta en Adivina el Agente
 Ajustar teclado en el wordle
-Añadir al wordle mapas.
-Subir intentos al wordle, a 5.
 Separar archivos (index, style y script).
 Animaciones de carga.
-Temporizador en algunos.
-Fuentes (Tungsten o DIN Next).
-Vyse, Iso, Clove
+Temporizador en los todos los modos menos en "Modo Clasico, Adivina el agente y Wordle"
 
 
